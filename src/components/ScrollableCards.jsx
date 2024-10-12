@@ -19,7 +19,7 @@ const ScrollableCards = () => {
         "https://670a9713ac6860a6c2c9f1d0.mockapi.io/test/trendingMovies"
       ).then((res) => res.json()),
       fetch(
-        "https://670a9713ac6860a6c2c9f1d0.mockapi.io/test/topRatingFilmDanSeries"
+        "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app/newMovies.json"
       ).then((res) => res.json()),
     ])
 
