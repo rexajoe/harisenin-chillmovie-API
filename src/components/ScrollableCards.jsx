@@ -7,48 +7,80 @@ const ScrollableCards = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
   const [continueWatching, setContinueWatching] = useState([]);
-  const [loading, setLoading] = useState(true); // State untuk menandai loading
-  const [error, setError] = useState(null); // State untuk menandai error
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Melakukan fetch data dari API
+    const topRatingMoviesCache = localStorage.getItem("topRatingMovies");
+    const trendingMoviesCache = localStorage.getItem("trendingMovies");
+    const newMoviesCache = localStorage.getItem("newMovies");
+    const continueWatchingCache = localStorage.getItem("continueWatching");
 
-    Promise.all([
-      fetch(import.meta.env.VITE_apiTopRatingMovies).then((res) => res.json()),
-      fetch(import.meta.env.VITE_apiTrendingMovies).then((res) => res.json()),
-      fetch(import.meta.env.VITE_apiNewMovies).then((res) => res.json()),
-      fetch(
-        "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app/lanjutTontonFilm.json"
-      ).then((res) => res.json()),
-    ])
+    if (
+      topRatingMoviesCache &&
+      trendingMoviesCache &&
+      newMoviesCache &&
+      continueWatchingCache
+    ) {
+      setTopRatingMovies(JSON.parse(topRatingMoviesCache));
+      setTrendingMovies(JSON.parse(trendingMoviesCache));
+      setNewMovies(JSON.parse(newMoviesCache));
+      setContinueWatching(JSON.parse(continueWatchingCache));
+      setLoading(false);
+    } else {
+      Promise.all([
+        fetch(import.meta.env.VITE_apiTopRatingMovies).then((res) =>
+          res.json()
+        ),
+        fetch(import.meta.env.VITE_apiTrendingMovies).then((res) => res.json()),
+        fetch(import.meta.env.VITE_apiNewMovies).then((res) => res.json()),
+        fetch(import.meta.env.VITE_apiContinueWatching).then((res) =>
+          res.json()
+        ),
+      ])
+        .then(
+          ([
+            topRatingData,
+            trendingData,
+            newMoviesData,
+            continueWatchingData,
+          ]) => {
+            setTopRatingMovies(topRatingData);
+            setTrendingMovies(trendingData);
+            setNewMovies(newMoviesData);
+            setContinueWatching(continueWatchingData);
 
-      .then(
-        ([
-          topRatingData,
-          trendingData,
-          newMoviesData,
-          continueWatchingData,
-        ]) => {
-          // Anggap response API berisi array film dengan properti title, image, dan new
-          setTopRatingMovies(topRatingData);
-          setTrendingMovies(trendingData);
-          setNewMovies(newMoviesData);
-          setContinueWatching(continueWatchingData);
-          setLoading(false); // Set loading selesai
-        }
-      )
-      .catch((error) => {
-        setError(error.message); // Menyimpan pesan error jika terjadi kesalahan
-        setLoading(false);
-      });
-  }, []); // Array kosong agar efek ini hanya berjalan sekali setelah komponen di-mount
+            // Simpan ke localStorage
+            localStorage.setItem(
+              "topRatingMovies",
+              JSON.stringify(topRatingData)
+            );
+            localStorage.setItem(
+              "trendingMovies",
+              JSON.stringify(trendingData)
+            );
+            localStorage.setItem("newMovies", JSON.stringify(newMoviesData));
+            localStorage.setItem(
+              "continueWatching",
+              JSON.stringify(continueWatchingData)
+            );
+
+            setLoading(false);
+          }
+        )
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
+    }
+  }, []);
 
   if (loading) {
-    return <p className="text-white">Loading movies...</p>; // Pesan loading
+    return <p className="text-white">Loading movies...</p>;
   }
 
   if (error) {
-    return <p>Error: {error}</p>; // Pesan error
+    return <p>Error: {error}</p>;
   }
 
   return (
