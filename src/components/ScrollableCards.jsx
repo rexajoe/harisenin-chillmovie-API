@@ -13,9 +13,9 @@ const ScrollableCards = () => {
     // Melakukan fetch data dari API
 
     Promise.all([
-      fetch(process.env.REACT_APP_apiTopRatingMovies).then((res) => res.json()),
-      fetch(process.env.REACT_APP_apiTrendingMovies).then((res) => res.json()),
-      fetch(process.env.REACT_APP_apiNewMovies).then((res) => res.json()),
+      fetch(import.meta.env.VITE_apiTopRatingMovies).then((res) => res.json()),
+      fetch(import.meta.env.VITE_apiTrendingMovies).then((res) => res.json()),
+      fetch(import.meta.env.VITE_apiNewMovies).then((res) => res.json()),
     ])
 
       .then(([topRatingData, trendingData, newMoviesData]) => {
