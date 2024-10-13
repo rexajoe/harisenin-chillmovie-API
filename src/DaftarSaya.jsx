@@ -14,9 +14,7 @@ const DaftarSaya = () => {
       setDaftarSaya(JSON.parse(daftarSayaCache));
       setLoading(false);
     } else {
-      fetch(
-        "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app/daftarSaya.json"
-      )
+      fetch(import.meta.env.VITE_apiDaftarSaya)
         .then((res) => res.json())
 
         .then((daftarSayaData) => {
