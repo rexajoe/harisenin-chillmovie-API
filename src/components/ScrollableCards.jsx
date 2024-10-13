@@ -11,16 +11,11 @@ const ScrollableCards = () => {
 
   useEffect(() => {
     // Melakukan fetch data dari API
+
     Promise.all([
-      fetch(
-        "https://670a9713ac6860a6c2c9f1d0.mockapi.io/test/topRatingFilmDanSeries"
-      ).then((res) => res.json()),
-      fetch(
-        "https://670a9713ac6860a6c2c9f1d0.mockapi.io/test/trendingMovies"
-      ).then((res) => res.json()),
-      fetch(
-        "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app/newMovies.json"
-      ).then((res) => res.json()),
+      fetch(process.env.REACT_APP_apiTopRatingMovies).then((res) => res.json()),
+      fetch(process.env.REACT_APP_apiTrendingMovies).then((res) => res.json()),
+      fetch(process.env.REACT_APP_apiNewMovies).then((res) => res.json()),
     ])
 
       .then(([topRatingData, trendingData, newMoviesData]) => {

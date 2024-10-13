@@ -7,15 +7,14 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBWfLGmzmgXjrQG5lRoq0PV2-ciZxt--N0",
-  authDomain: "test-c2dd7.firebaseapp.com",
-  databaseURL:
-    "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "test-c2dd7",
-  storageBucket: "test-c2dd7.appspot.com",
-  messagingSenderId: "241865523349",
-  appId: "1:241865523349:web:699e69ae660a553ee59b9c",
-  measurementId: "G-JNX6TZQQHB",
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  databaseURL: process.env.REACT_APP_databaseURL,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
+  measurementId: process.env.REACT_APP_measurementId,
 };
 
 // Initialize Firebase
@@ -23,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-// Function to fetch top rating movies
+// Function to fetch new Movies
 export const fetchnewMovies = async () => {
   const moviesRef = ref(db, "newMovies");
   const snapshot = await get(moviesRef);
