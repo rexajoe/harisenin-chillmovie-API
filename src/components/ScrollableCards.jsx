@@ -6,6 +6,7 @@ const ScrollableCards = () => {
   const [topRatingMovies, setTopRatingMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [newMovies, setNewMovies] = useState([]);
+  const [continueWatching, setContinueWatching] = useState([]);
   const [loading, setLoading] = useState(true); // State untuk menandai loading
   const [error, setError] = useState(null); // State untuk menandai error
 
@@ -16,15 +17,26 @@ const ScrollableCards = () => {
       fetch(import.meta.env.VITE_apiTopRatingMovies).then((res) => res.json()),
       fetch(import.meta.env.VITE_apiTrendingMovies).then((res) => res.json()),
       fetch(import.meta.env.VITE_apiNewMovies).then((res) => res.json()),
+      fetch(
+        "https://test-c2dd7-default-rtdb.asia-southeast1.firebasedatabase.app/lanjutTontonFilm.json"
+      ).then((res) => res.json()),
     ])
 
-      .then(([topRatingData, trendingData, newMoviesData]) => {
-        // Anggap response API berisi array film dengan properti title, image, dan new
-        setTopRatingMovies(topRatingData);
-        setTrendingMovies(trendingData);
-        setNewMovies(newMoviesData);
-        setLoading(false); // Set loading selesai
-      })
+      .then(
+        ([
+          topRatingData,
+          trendingData,
+          newMoviesData,
+          continueWatchingData,
+        ]) => {
+          // Anggap response API berisi array film dengan properti title, image, dan new
+          setTopRatingMovies(topRatingData);
+          setTrendingMovies(trendingData);
+          setNewMovies(newMoviesData);
+          setContinueWatching(continueWatchingData);
+          setLoading(false); // Set loading selesai
+        }
+      )
       .catch((error) => {
         setError(error.message); // Menyimpan pesan error jika terjadi kesalahan
         setLoading(false);
@@ -41,7 +53,10 @@ const ScrollableCards = () => {
 
   return (
     <div>
-      <HorizontalCards />
+      <HorizontalCards
+        title="Melanjutkan Tonton Film"
+        cards={continueWatching}
+      />
       <VerticalCards
         title="Top Rating Film dan Series Hari Ini"
         cards={topRatingMovies}
